@@ -524,6 +524,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var layers = [];
   var layer;
   var i;
+  var top;
   for (i = 0; i < 5; i++) {
     layer = document.createElement('div');
     layer.id = 'mover-layer-' + i;
@@ -536,8 +537,11 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.className = 'mover';
     elem.src = "images/pizza-100.png";
     elem.style.left = ((i % cols) * s) + "px";
-    elem.style.top = (Math.floor(i / cols) * s) + 'px';
-    layers[i % 5].appendChild(elem);
+    top = (Math.floor(i / cols) * s);
+    elem.style.top = top + 'px';
+    if (top < window.innerHeight) {
+      layers[i % 5].appendChild(elem);
+    }
   }
   updatePositions();
 });
