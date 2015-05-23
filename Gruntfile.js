@@ -10,12 +10,20 @@ module.exports = function(grunt) {
                     dest: 'dist/img/'
                 }]
             }
+        },
+        cssmin: {
+            target: {
+                files: {
+                    'dist/css/style.css' : ['css/style.css'],
+                    'dist/css/print.css' : ['css/print.css']
+                }            }
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-imagemin');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
 
     // Default task(s).
-    grunt.registerTask('default', ['imagemin']);
+    grunt.registerTask('default', ['imagemin', 'cssmin']);
 
 };
