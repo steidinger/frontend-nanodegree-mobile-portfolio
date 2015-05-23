@@ -32,6 +32,15 @@ module.exports = function(grunt) {
                 }
             }
         },
+        copy: {
+            dist: {
+                files: [{
+                    expand: true,
+                    src: ['js/**'],
+                    dest: 'dist/'
+                }]
+            }
+        },
         connect: {
             dev: {
                 options: {
@@ -57,10 +66,11 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-imagemin');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-connect');
 
     grunt.registerTask('min', ['imagemin', 'cssmin', 'htmlmin']);
-    grunt.registerTask('prod', ['min', 'connect:prod']);
+    grunt.registerTask('prod', ['min', 'copy:dist', 'connect:prod']);
     grunt.registerTask('default', ['connect:dev'])
 
 };
