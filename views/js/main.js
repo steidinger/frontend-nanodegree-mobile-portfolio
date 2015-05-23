@@ -422,6 +422,11 @@ var resizePizzas = function(size) {
   changeSliderLabel(size);
 
   // Returns the size difference to change a pizza element from one size to another. Called by changePizzaSlices(size).
+  /*
+    As shown in the Udacity course "Browser Rendering Optimization" the original version of getWidth was just an overly
+    complicated way of saying the size is either 25%, 33% or 50%. Therefore instead of computing the width in pixels
+    I simply return the percentage.
+  */
   function getWidth(size) {
       switch(size) {
         case "1":
@@ -486,12 +491,19 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 var ticking = false;
 
 // Moves the sliding background pizzas based on scroll position
+/*
+Since on setup the pizzas were grouped into 5 layers updatePositions simply shifts each of these
+layers horizontally. The pizzas are placed at the original starting positions within their respective layers
+and no longer move independently.
+ */
 function updatePositions() {
-  ticking = false;
   frame++;
   window.performance.mark("mark_start_frame");
 
+  // do not move each single pizza, use groups of pizzas moving synchronously instead
   var items = document.querySelectorAll('.mover-layer');
+  // do not read scrollTop inside the loop. Since the position of the layers is changed that would cause layout thrashing.
+  // since scrollTop doesn't change during the loop it can be safely cached.
   var scrollTop = document.body.scrollTop;
   for (var i = 0; i < 5; i++) {
     var phase = Math.sin((scrollTop / 1250) + (i % 5));
@@ -506,10 +518,12 @@ function updatePositions() {
     var timesToUpdatePosition = window.performance.getEntriesByName("measure_frame_duration");
     logAverageFrame(timesToUpdatePosition);
   }
+  ticking = false;
 }
 
 // runs updatePositions on scroll
 window.addEventListener('scroll', function () {
+  // only request an animation frame if there is no request pending. The flag is reset in updatePositions.
   if (!ticking) {
     ticking = true;
     requestAnimationFrame(updatePositions);
@@ -517,6 +531,12 @@ window.addEventListener('scroll', function () {
 });
 
 // Generates the sliding pizzas when the page loads.
+/*
+The original version of laying out the moving pizzas caused the pizzas to be repainted during each scroll event.
+Since the function updatePositions uses only 5 different phase values for the movement I put the pizzas into
+5 groups. Each group is a div with class 'moving-layer'. Using css 'will-change' I put each of these groups as well
+as the background and the foreground into their own layers. This completely eliminates the repaints.
+ */
 document.addEventListener('DOMContentLoaded', function() {
   var movingPizzaContainer = document.querySelector("#movingPizzas1");
   var cols = 8;
@@ -539,9 +559,12 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.left = ((i % cols) * s) + "px";
     top = (Math.floor(i / cols) * s);
     elem.style.top = top + 'px';
+    // limit the number of pizzas to those visible in the window. Using fixed positioning means that the pizzas
+    // below the fold never scroll into view. However if the window is resized the user might notice that not all pizzas
+    // are displayed.
     if (top < window.innerHeight) {
       layers[i % 5].appendChild(elem);
     }
   }
-  updatePositions();
+  requestAnimationFrame(updatePositions);
 });

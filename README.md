@@ -47,3 +47,10 @@ To see the non-optimized version you'll have to use the command
 
 As before, the site will be available at [http://localhost:8080](http://localhost:8080).
 
+### Optimizations for views/js/main.js and pizza.html
+
+- use requestAnimationFrame to update the pizzas' positions
+- do not read document.body.scrollTop within the for loop, instead read it only once
+- debounce updatePositions, i.e. do not call it from the scroll event handler if another call is still in progress
+- put moving pizzas into own layers
+- do not move pizzas individually, move all pizzas following the same path together
