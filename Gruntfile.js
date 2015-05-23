@@ -1,4 +1,5 @@
 module.exports = function(grunt) {
+    var compression = require('compression');
 
     grunt.initConfig({
         imagemin: {
@@ -61,6 +62,12 @@ module.exports = function(grunt) {
                 options: {
                     port: 8080,
                     keepalive: true,
+                    // enable gzip compression
+                    // config taken from http://stackoverflow.com/questions/27964209/applying-gzip-compression-to-files-served-by-grunt-contrib-connect
+                    middleware: function (connect, options, middlewares) {
+                        middlewares.unshift(compression());
+                        return middlewares;
+                    },
                     base: {
                         path: 'dist',
                         options: {
