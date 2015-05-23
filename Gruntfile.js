@@ -59,7 +59,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-contrib-connect');
 
-    // Default task(s).
-    grunt.registerTask('default', ['imagemin', 'cssmin', 'htmlmin']);
+    grunt.registerTask('min', ['imagemin', 'cssmin', 'htmlmin']);
+    grunt.registerTask('prod', ['min', 'connect:prod']);
+    grunt.registerTask('default', ['connect:dev'])
 
 };
