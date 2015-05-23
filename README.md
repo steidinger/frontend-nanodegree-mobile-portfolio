@@ -54,3 +54,10 @@ As before, the site will be available at [http://localhost:8080](http://localhos
 - debounce updatePositions, i.e. do not call it from the scroll event handler if another call is still in progress
 - put moving pizzas into own layers
 - do not move pizzas individually, move all pizzas following the same path together
+
+### Optimized versions of index.html and its css and images
+
+The optimized versions are generated automatically during the build in the directory *dist*.
+Normally I would not include them in the repository as they should not be changed manually 
+and can always be regenerated. However the course's instructions require that they are submitted 
+to the same repository as the source files so that directory is included. 
