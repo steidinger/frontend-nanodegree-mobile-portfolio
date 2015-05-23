@@ -87,7 +87,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-inline');
 
     grunt.registerTask('min', ['imagemin', 'cssmin', 'inline', 'htmlmin']);
+    grunt.registerTask('dev', ['connect:dev']);
     grunt.registerTask('prod', ['min', 'copy:dist', 'connect:prod']);
-    grunt.registerTask('default', ['connect:dev'])
+    grunt.registerTask('default', ['prod']);
 
 };
