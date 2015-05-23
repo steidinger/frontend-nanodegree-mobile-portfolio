@@ -2,7 +2,7 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
         imagemin: {
-            img: {
+            dist: {
                 files: [{
                     expand: true,
                     cwd: 'img/',
@@ -12,18 +12,33 @@ module.exports = function(grunt) {
             }
         },
         cssmin: {
-            target: {
+            dist: {
+                target: {
+                    files: {
+                        'dist/css/style.css': ['css/style.css'],
+                        'dist/css/print.css': ['css/print.css']
+                    }
+                }
+            }
+        },
+        htmlmin: {
+            dist: {
+                options: {
+                    removeComments: true,
+                    collapseWhitespace: true
+                },
                 files: {
-                    'dist/css/style.css' : ['css/style.css'],
-                    'dist/css/print.css' : ['css/print.css']
-                }            }
+                    'dist/index.html' : ['index.html']
+                }
+            }
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-imagemin');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-htmlmin');
 
     // Default task(s).
-    grunt.registerTask('default', ['imagemin', 'cssmin']);
+    grunt.registerTask('default', ['imagemin', 'cssmin', 'htmlmin']);
 
 };
