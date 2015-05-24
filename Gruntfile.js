@@ -36,10 +36,11 @@ module.exports = function(grunt) {
                     removeComments: true,
                     collapseWhitespace: true
                 },
-                files: {
-                    'dist/index.html' : ['dist/index.html'],
-                    'dist/views/pizza.html' : ['views/pizza.html']
-                }
+                files: [{
+                    expand: true,
+                    src: ['*.html', 'views/*.html'],
+                    dest: 'dist/'
+                }]
             }
         },
         copy: {
