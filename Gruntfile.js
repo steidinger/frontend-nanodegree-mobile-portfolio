@@ -6,20 +6,19 @@ module.exports = function(grunt) {
             dist: {
                 files: [{
                     expand: true,
-                    cwd: 'img/',
-                    src: ['*.{png,jpg,gif}'],
-                    dest: 'dist/img/'
+                    // for some reason 'pizzeria.jpg' cannot be optimized by imagemin
+                    src: ['img/*.{png,jpg,gif}', 'views/images/pizza.png', 'views/images/pizza-100.png'],
+                    dest: 'dist/'
                 }]
             }
         },
         cssmin: {
             dist: {
-                target: {
-                    files: {
-                        'dist/css/style.css': ['css/style.css'],
-                        'dist/css/print.css': ['css/print.css']
-                    }
-                }
+                files: [{
+                    expand: true,
+                    src: ['css/*.css', 'views/css/*.css'],
+                    dest: 'dist/'
+                }]
             }
         },
         inline: {
@@ -38,7 +37,8 @@ module.exports = function(grunt) {
                     collapseWhitespace: true
                 },
                 files: {
-                    'dist/index.html' : ['dist/index.html']
+                    'dist/index.html' : ['dist/index.html'],
+                    'dist/views/pizza.html' : ['views/pizza.html']
                 }
             }
         },
@@ -46,7 +46,7 @@ module.exports = function(grunt) {
             dist: {
                 files: [{
                     expand: true,
-                    src: ['js/**'],
+                    src: ['js/**', 'views/js/**', 'views/images/pizzeria.*'],
                     dest: 'dist/'
                 }]
             }
