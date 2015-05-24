@@ -26,8 +26,11 @@ module.exports = function(grunt) {
                 options: {
                     cssmin: true
                 },
-                src: 'index.html',
-                dest: 'dist/index.html'
+                files: [{
+                    expand: true,
+                    src: ['*.html', 'views/*.html'],
+                    dest: 'dist/'
+                }]
             }
         },
         htmlmin: {
